@@ -59,6 +59,31 @@ function CustomerPage() {
         console.error("Error adding customer:", error);
       }
     };
+
+    
+    const handleDeleteCustomer = async (customer_id) => {
+      if (!window.confirm("Are you sure you want to delete this customer?")) {
+        return; // If user cancels, do nothing
+      }
+    
+      try {
+        const response = await fetch("/delete-customer", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ customer_id }),
+        });
+    
+        if (response.ok) {
+          fetchCustomers(); // Refresh list after deletion
+        } else {
+          console.error("Failed to delete customer");
+        }
+      } catch (error) {
+        console.error("Error deleting customer:", error);
+      }
+    };
   
     return (
       <div>
@@ -82,6 +107,7 @@ function CustomerPage() {
               <th>Customer ID</th>
               <th>First Name</th>
               <th>Last Name</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -91,6 +117,7 @@ function CustomerPage() {
                   <td>{customer.customer_id}</td>
                   <td>{customer.first_name}</td>
                   <td>{customer.last_name}</td>
+                  <td><button onClick={() => handleDeleteCustomer(customer.customer_id)}>DELETE</button></td>
                 </tr>
               ))
             ) : (
