@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import "./customerpage.css";
+import { FaEdit, FaEye, FaTrash, FaTimes } from "react-icons/fa";
 
 function CustomerPage() {
   const [customers, setCustomers] = useState([]);
@@ -6,14 +8,17 @@ function CustomerPage() {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const limit = 10;
-  const [showModal, setShowModal] = useState(false);
+  const [modalType, setModalType] = useState(null); 
   const [newCustomer, setNewCustomer] = useState({
     first_name: "",
     last_name: "",
     email: "",
     
   });
+  const [showModal, setShowModal] = useState(false);
   const [editCustomer, setEditCustomer] = useState(null);
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [rentalHistory, setRentalHistory] = useState([]);
 
   useEffect(() => {
       fetchCustomers();
@@ -31,6 +36,35 @@ function CustomerPage() {
       console.error("Error fetching customers:", error);
       }
   };
+
+  const fetchRentalHistory = async (customer_id) => {
+    try {
+      const response = await fetch(`/customer-rental-history/${customer_id}`);
+      const data = await response.json();
+      setRentalHistory(data.rental_history);
+    } catch (error) {
+      console.error("Error fetching rental history:", error);
+    }
+  };
+
+  const openAddCustomerModal = () => {
+    setModalType("add");
+    setShowModal(true);
+  };
+  
+  const openEditCustomerModal = (customer) => {
+    setEditCustomer(customer);
+    setModalType("edit");
+    setShowModal(true);
+  };
+  
+  const openViewCustomerModal = (customer) => {
+    setSelectedCustomer(customer);
+    fetchRentalHistory(customer.customer_id);
+    setModalType("view");
+    setShowModal(true);
+  };
+  
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
@@ -52,9 +86,9 @@ function CustomerPage() {
       });
 
       if (response.ok) {
-        setShowModal(false); // Close the modal
-        setNewCustomer({ first_name: "", last_name: "", email: "" }); // Reset form
-        fetchCustomers(); // Refresh the customer list
+        setShowModal(false); 
+        setNewCustomer({ first_name: "", last_name: "", email: "" });
+        fetchCustomers(); 
       }
     } catch (error) {
       console.error("Error adding customer:", error);
@@ -64,7 +98,7 @@ function CustomerPage() {
   
   const handleDeleteCustomer = async (customer_id) => {
     if (!window.confirm("Are you sure you want to delete this customer?")) {
-      return; // If user cancels, do nothing
+      return; 
     }
   
     try {
@@ -77,7 +111,7 @@ function CustomerPage() {
       });
   
       if (response.ok) {
-        fetchCustomers(); // Refresh list after deletion
+        fetchCustomers(); 
       } else {
         console.error("Failed to delete customer");
       }
@@ -88,7 +122,7 @@ function CustomerPage() {
 
   const handleEditCustomer = (customer) => {
     setEditCustomer(customer);
-    setShowModal(true); // Open the modal
+    setShowModal(true);
   };
 
   const handleUpdateCustomer = async () => {
@@ -102,7 +136,7 @@ function CustomerPage() {
       if (response.ok) {
         setShowModal(false);
         setEditCustomer(null);
-        fetchCustomers(); // Refresh the customer list
+        fetchCustomers();
       }
     } catch (error) {
       console.error("Error updating customer:", error);
@@ -111,29 +145,32 @@ function CustomerPage() {
   
 
   return (
-    <div>
-      <h2>Customer List</h2>
-
+    <div className='customerdiv'>
+      <h2 className='logo'>Customer List</h2>
       {/* Search Input */}
-      <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
-        <input
-          type="text"
-          placeholder="Search by ID, first or last name"
-          value={search}
-          onChange={handleSearchChange}
-        />
-        <button onClick={() => setShowModal(true)}>ADD</button>
+      <div className='search-container'>
+        <div className="search-box">
+          <input
+            type="text"
+            placeholder=""
+            value={search}
+            onChange={handleSearchChange}
+          />
+          <span></span>
+        </div>
+  
+        <button onClick={openAddCustomerModal} className="button-74">Add Customer</button>
       </div>
 
       {/* Customer Table */}
-      <table border="1">
+      <table className="container">
         <thead>
           <tr>
-            <th>Customer ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Action</th>
+            <th><h1>Customer ID</h1></th>
+            <th><h1>First Name</h1></th>
+            <th><h1>Last Name</h1></th>
+            <th><h1>Email</h1></th>
+            <th><h1>Action</h1></th>
           </tr>
         </thead>
         <tbody>
@@ -144,8 +181,11 @@ function CustomerPage() {
                 <td>{customer.first_name}</td>
                 <td>{customer.last_name}</td>
                 <td>{customer.email}</td>
-                <td><button onClick={() => handleEditCustomer(customer)}>EDIT</button>
-                <button onClick={() => handleDeleteCustomer(customer.customer_id)}>DELETE</button></td>
+                <td>
+                  <button onClick={() => openEditCustomerModal(customer)} className="icon-button"><FaEdit /></button>
+                  <button onClick={() => openViewCustomerModal(customer)} className="icon-button"><FaEye /></button>
+                  <button onClick={() => handleDeleteCustomer(customer.customer_id)} className="icon-button delete-icon"><FaTrash /></button>
+                </td>
               </tr>
             ))
           ) : (
@@ -156,64 +196,119 @@ function CustomerPage() {
         </tbody>
       </table>
 
-      {/* Pagination Buttons */}
-      <button disabled={page === 1} onClick={() => setPage(page - 1)}>
-        Previous
-      </button>
-      <span> Page {page} </span>
-      <button disabled={customers.length < limit} onClick={() => setPage(page + 1)}>
-        Next
-      </button>
-
+      <div className='pagination'>
+        <button className='button-74' disabled={page === 1} onClick={() => setPage(page - 1)}>
+          Previous
+        </button>
+        <span className="page"> Page {page} </span>
+        <button className='button-74' disabled={customers.length < limit} onClick={() => setPage(page + 1)}>
+          Next
+        </button>
+      </div>
 
       {showModal && (
-      <div style={{
-        position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)",
-        background: "white", padding: "20px", borderRadius: "10px", boxShadow: "0px 0px 10px rgba(0,0,0,0.2)"
-      }}>
-        <h3>{editCustomer ? "Edit Customer" : "Add New Customer"}</h3>
-        <input
-          type="text"
-          name="first_name"
-          placeholder="First Name"
-          value={editCustomer ? editCustomer.first_name : newCustomer.first_name}
-          onChange={(e) =>
-            editCustomer
-              ? setEditCustomer({ ...editCustomer, first_name: e.target.value })
-              : setNewCustomer({ ...newCustomer, first_name: e.target.value })
-          }
-        />
-        <br />
-        <input
-          type="text"
-          name="last_name"
-          placeholder="Last Name"
-          value={editCustomer ? editCustomer.last_name : newCustomer.last_name}
-          onChange={(e) =>
-            editCustomer
-              ? setEditCustomer({ ...editCustomer, last_name: e.target.value })
-              : setNewCustomer({ ...newCustomer, last_name: e.target.value })
-          }
-        />
-        <br />
-        <input
-          type="text"
-          name="email"
-          placeholder="Email"
-          value={editCustomer ? editCustomer.email : newCustomer.email}
-          onChange={(e) =>
-            editCustomer
-              ? setEditCustomer({ ...editCustomer, email: e.target.value })
-              : setNewCustomer({ ...newCustomer, email: e.target.value })
-          }
-        />
-        <br />
-        <button onClick={editCustomer ? handleUpdateCustomer : handleAddCustomer}>
-          {editCustomer ? "Update" : "Submit"}
-        </button>
-        <button onClick={() => { setShowModal(false); setEditCustomer(null); }}>Cancel</button>
-      </div>
+        <div style={{
+          position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)",
+          background: "white", padding: "20px", borderRadius: "10px", boxShadow: "0px 0px 10px rgba(0,0,0,0.2)"
+        }}>
+          {modalType === "view" && selectedCustomer && (
+            <>
+              <button onClick={() => setShowModal(false)} className="close-button"><FaTimes /></button>
+              <div className="details">
+                <h3>Customer Details</h3>
+                <p><strong>Name:</strong> {selectedCustomer.first_name} {selectedCustomer.last_name}</p>
+                <p><strong>Email:</strong> {selectedCustomer.email}</p>
+              </div>
+
+              <h4 className='rtitle'>Rental History:</h4>
+              <div className="rental-table-container">
+              <table className = 'rental-table'>
+                <thead>
+                  <tr>
+                    <th>Rental ID</th>
+                    <th>Title</th>
+                    <th>Rental Date</th>
+                    <th>Return Date</th>
+                    <th>Returned</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {rentalHistory.length > 0 ? (
+                    rentalHistory.map((rental) => (
+                      <tr key={rental.rental_id}>
+                        <td>{rental.rental_id}</td>
+                        <td>{rental.title}</td>
+                        <td>{rental.rental_date}</td>
+                        <td>{rental.return_date}</td>
+                        <td>{rental.returned}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="3">No rentals</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+              </div>
+              
+            </>
+          )}
+
+          {(modalType === "add" || modalType === "edit") && (
+            <>
+              <div className="idk">
+              <div className="modalae">
+              <button onClick={() => { setShowModal(false); setEditCustomer(null); setModalType(null); }} className="close-button"><FaTimes /></button>
+              <h3>{modalType === "edit" ? "Edit Customer" : "Add New Customer"}</h3>
+              <div>
+                <input
+                  type="text"
+                  name="first_name"
+                  placeholder="First Name"
+                  value={modalType === "edit" ? editCustomer.first_name : newCustomer.first_name}
+                  onChange={(e) =>
+                    modalType === "edit"
+                      ? setEditCustomer({ ...editCustomer, first_name: e.target.value })
+                      : setNewCustomer({ ...newCustomer, first_name: e.target.value })
+                  }
+                />
+              </div>
+              <br />
+              <input
+                type="text"
+                name="last_name"
+                placeholder="Last Name"
+                value={modalType === "edit" ? editCustomer.last_name : newCustomer.last_name}
+                onChange={(e) =>
+                  modalType === "edit"
+                    ? setEditCustomer({ ...editCustomer, last_name: e.target.value })
+                    : setNewCustomer({ ...newCustomer, last_name: e.target.value })
+                }
+              />
+              <br />
+              <input
+                type="text"
+                name="email"
+                placeholder="Email"
+                value={modalType === "edit" ? editCustomer.email : newCustomer.email}
+                onChange={(e) =>
+                  modalType === "edit"
+                    ? setEditCustomer({ ...editCustomer, email: e.target.value })
+                    : setNewCustomer({ ...newCustomer, email: e.target.value })
+                }
+              />
+              <br />
+              <button class="button-28" onClick={modalType === "edit" ? handleUpdateCustomer : handleAddCustomer}>
+                {modalType === "edit" ? "Update" : "Submit"}
+              </button>
+              </div>
+              </div>
+            </>
+          )}
+        </div>
       )}
+
 
     </div>
 

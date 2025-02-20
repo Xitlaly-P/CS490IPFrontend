@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import LandingPage from "./LandingPage";
 import CustomerPage from "./CustomerPage";
 import FilmsPage from "./FilmsPage";
+import "./App.css"
 
 function App() {
   const [data, setData] = useState([{}])
@@ -21,20 +22,24 @@ function App() {
     <Router>
       <div> {/* This wraps both the navigation and data display */}
         {/* Navigation Menu */}
-        <nav>
-          <ul>
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/customers">Customers</Link></li>
-            <li><Link to="/films">Films</Link></li>
-          </ul>
-        </nav>
+        <div className="sep">
+          <nav>
+            <ul className="nav">
+              <li className="item"><Link to="/">Home</Link></li>
+              <li className="item"><Link to="/customers">Customers</Link></li>
+              <li className="item"><Link to="/films">Films</Link></li>
+            </ul>
+          </nav>
+        </div>
 
         {/* Page Routes */}
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/customers" element={<CustomerPage />} />
-          <Route path="/films" element={<FilmsPage />} />
-        </Routes>
+        <div className="content">
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/customers" element={<CustomerPage />} />
+            <Route path="/films" element={<FilmsPage />} />
+          </Routes>
+        </div>
 
         {/* <div>
           {typeof data.members === 'undefined' ? (
