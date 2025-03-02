@@ -71,10 +71,6 @@ function CustomerPage() {
     setPage(1); // Reset page to 1
   };
 
-  const handleInputChange = (e) => {
-    setNewCustomer({ ...newCustomer, [e.target.name]: e.target.value });
-  };
-
   const handleAddCustomer = async () => {
     try {
       const response = await fetch("/add-customer", {
@@ -118,11 +114,6 @@ function CustomerPage() {
     } catch (error) {
       console.error("Error deleting customer:", error);
     }
-  };
-
-  const handleEditCustomer = (customer) => {
-    setEditCustomer(customer);
-    setShowModal(true);
   };
 
   const handleUpdateCustomer = async () => {
@@ -190,7 +181,7 @@ function CustomerPage() {
             ))
           ) : (
             <tr>
-              <td colSpan="3">No customers found</td>
+              <td colSpan="4">No customers found</td>
             </tr>
           )}
         </tbody>

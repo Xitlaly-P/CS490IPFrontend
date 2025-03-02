@@ -2,8 +2,8 @@ import React from "react";
 
 function LandingPage() {
   return (
-    <div>
-      <h1>Welcome to the Rental Store</h1>
+    <div className='titlediv'>
+      <h2>Welcome to the Rental Store</h2>
       <p>This is the landing page.</p>
     </div>
   );
