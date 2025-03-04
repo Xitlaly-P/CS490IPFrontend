@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./films.css";
 import {FaEye, FaTimes} from "react-icons/fa";
 
@@ -8,6 +10,9 @@ function FilmsPage() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [selectedFilm, setSelectedFilm] = useState(null);
+  const [customerId, setCustomerId] = useState("");
+  const [isRentModalOpen, setIsRentModalOpen] = useState(false);
+  const [filmToRent, setFilmToRent] = useState(null);
   const limit = 10; // Number of films per page
 
   useEffect(() => {
@@ -28,6 +33,47 @@ function FilmsPage() {
     }
   };
 
+  const openRentModal = (film) => {
+    setFilmToRent(film);
+    setIsRentModalOpen(true);
+  };
+
+  const closeRentModal = () => {
+    setIsRentModalOpen(false);
+    setCustomerId("");
+    setFilmToRent(null);
+  };
+
+  
+  const handleRent = async () => {
+    if (!customerId.trim()) {
+      toast.error("Please enter a valid Customer ID.");
+      return;
+    }
+
+    try {
+      const response = await fetch("/rent-film", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ film_id: filmToRent.film_id, customer_id: customerId }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast.success("Rental successful! 🎉");
+        fetchFilms(); // Refresh the available films
+        closeRentModal(); // Close the modal
+      } else {
+        toast.error(data.message || "Rental failed. ❌");
+      }
+    } catch (error) {
+      console.error("Error renting film:", error);
+      toast.error("Something went wrong. Try again.");
+    }
+  };
+
+
   const totalPages = Math.ceil(totalFilms / limit);
 
   const openModal = (film) => {
@@ -41,7 +87,7 @@ function FilmsPage() {
   return (
     <div className="titlediv">
       <h2>Films</h2>
-
+      <ToastContainer position="bottom-right" autoClose={3000} />
       {/* Search Bar */}
       <input
         type="text"
@@ -63,7 +109,9 @@ function FilmsPage() {
                 <th>Category</th>
                 <th>Year</th>
                 <th>Rating</th>
+                <th>Available Copies</th>
                 <th>View</th>
+                <th>Rent</th>
               </tr>
             </thead>
             <tbody>
@@ -73,9 +121,11 @@ function FilmsPage() {
                   <td>{film.category}</td>
                   <td>{film.release_year}</td>
                   <td>{film.rating}</td>
+                  <td>{film.available_copies}</td>
                   <td>
                     <button onClick={() => openModal(film)} className="icon-button"><FaEye /></button>
                   </td>
+                  <td><button className="rent-button" onClick={() => openRentModal(film)}>Rent</button></td>
                 </tr>
               ))}
             </tbody>
@@ -103,7 +153,26 @@ function FilmsPage() {
       ) : (
         <p>No films found.</p>
       )}
-
+      {/* Rent Modal */}
+      {isRentModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <button className="close-button" onClick={closeRentModal}><FaTimes /></button>
+            <h2>Rent {filmToRent.title}</h2>
+            <label>Enter Customer ID:</label>
+            <input
+              type="text"
+              value={customerId}
+              onChange={(e) => setCustomerId(e.target.value)}
+              placeholder="Customer ID"
+            />
+            <div className="modal-actions">
+              <button className="confirm-button" onClick={handleRent}>Confirm Rental</button>
+              <button className="cancel-button" onClick={closeRentModal}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
       {selectedFilm && (
         <div className="modal-overlay">
           <div className="modal">
