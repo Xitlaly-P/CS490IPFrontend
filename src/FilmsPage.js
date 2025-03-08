@@ -125,7 +125,7 @@ function FilmsPage() {
                   <td>
                     <button onClick={() => openModal(film)} className="icon-button"><FaEye /></button>
                   </td>
-                  <td><button className="rent-button" onClick={() => openRentModal(film)}>Rent</button></td>
+                  <td><button className="button-2" onClick={() => openRentModal(film)}>Rent</button></td>
                 </tr>
               ))}
             </tbody>
@@ -135,16 +135,16 @@ function FilmsPage() {
           <div className="pagination">
             <button
               disabled={page === 1}
-              onClick={() => setPage((prev) => prev - 1)}
+              onClick={() => setPage((prev) => prev - 1) } className='button-74'
             >
               Previous
             </button>
-            <span>
+            <span className="page">
               Page {page} of {totalPages}
             </span>
             <button
               disabled={page === totalPages}
-              onClick={() => setPage((prev) => prev + 1)}
+              onClick={() => setPage((prev) => prev + 1)} className='button-74'
             >
               Next
             </button>
@@ -157,8 +157,8 @@ function FilmsPage() {
       {isRentModalOpen && (
         <div className="modal-overlay">
           <div className="modal">
-            <button className="close-button" onClick={closeRentModal}><FaTimes /></button>
-            <h2>Rent {filmToRent.title}</h2>
+            <div className="closetop"><button className="close-button" onClick={closeRentModal}><FaTimes /></button></div>
+            <h2 className='modaltitle'>Rent {filmToRent.title}</h2>
             <label>Enter Customer ID:</label>
             <input
               type="text"
@@ -167,8 +167,8 @@ function FilmsPage() {
               placeholder="Customer ID"
             />
             <div className="modal-actions">
-              <button className="confirm-button" onClick={handleRent}>Confirm Rental</button>
-              <button className="cancel-button" onClick={closeRentModal}>Cancel</button>
+              <button className="button-2" onClick={handleRent}>Confirm Rental</button>
+              <button className="button-2" onClick={closeRentModal}>Cancel</button>
             </div>
           </div>
         </div>

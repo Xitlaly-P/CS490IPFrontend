@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Limelight&family=Outfit:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
 .five{
     display: flex;
     flex-direction: row;
@@ -9,6 +12,7 @@
     width: 300px;
     height: 300px;
     perspective: 500px;
+    font-family: "Outfit", serif;
 }
 
 .content {
@@ -41,5 +45,39 @@
     background: #03446A;
     color: white;
     transform: rotateY( 180deg );
+    padding-right: 5px;
+    padding-left: 5px;
+    justify-content: center;
+    align-content: center;
+
+}
+.front{
+    justify-content: center;
+    align-content: center;
 }
 
+h3{
+    font-family: "Limelight", serif;
+    color:white;
+    text-shadow: 4px 4px 4px #000;
+    margin-bottom: 10px;
+    margin-top: 40px;
+    font-size: 35px;
+}
+
+ul{
+    font-size: 18px;
+    list-style-type: none;
+      
+}
+li{
+    margin-bottom: 5px;
+}
+.titlediv{
+    margin-bottom: 25px;
+}
+
+h6{
+    font-size: 24px;
+    margin-bottom: 5px;
+}

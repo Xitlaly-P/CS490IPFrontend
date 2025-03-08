@@ -20,17 +20,6 @@ width: 400px;
 text-align: center;
 box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
 }
-
-/* Close Button */
-.close-button {
-    background: red;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    position: relative;
-}
-
   
 .close-button {
     background: none;
@@ -39,6 +28,9 @@ box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
     font-size: 1.5rem;
     color: black;
     transition: color 0.3s ease;
+    position: relative;
+    left:170px;
+    top: -4px;
 }
 
 .close-button:hover {
@@ -121,5 +113,85 @@ table{
     color: white;
 }
 
+.button-74 {
+    background-color: white;
+    border: 2px solid rgba(0, 0, 0, 0.327);
+    border-radius: 30px;
+    box-shadow: rgba(0, 0, 0, 0.327) 4px 4px 0 0;
+    color: black;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 600;
+    font-size: 18px;
+    padding: 0 18px;
+    line-height: 50px;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    font-family: "Outfit", serif;
+  }
+  
+  .button-74:hover {
+    background-color: #f6f3f0;
+  }
+  
+  .button-74:active {
+    box-shadow: rgba(0, 0, 0, 0.327) 2px 2px 0 0;
+    transform: translate(2px, 2px);
+  }
+  
+  @media (min-width: 768px) {
+    .button-74 {
+      min-width: 120px;
+      padding: 0 25px;
+    }
+  }
 
+.page{
+    font-family: "Outfit", serif;
+    color: white;
+    font-size: 1.3em;
+    margin-left: 1em;
+    margin-right: 1em;
+}
 
+.button-2 {
+  background-color: rgb(223, 211, 211);
+  border-radius: 8px;
+  border-width: 0;
+  color: #333333;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  list-style: none;
+  margin: 0;
+  padding: 10px 12px;
+  text-align: center;
+  transition: all 200ms;
+  vertical-align: baseline;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  margin-right: 2px;
+}
+.closetop{
+    width: 100%;
+    justify-content: right;
+    align-content: end;
+    align-items: end;
+    justify-items: right;
+}
+.modaltitle{
+    padding-top: 0px;
+    color:#0E1119;
+    text-shadow: none;
+}
+label{
+    font-family: Outfit;
+}

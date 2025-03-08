@@ -70,7 +70,7 @@ function LandingPage() {
                   <h6>Top 5 Rented Films:</h6>
                   <ul>
                     {actor.top_films?.map((film) => (
-                      <li key={film.film_id}>{film.title} (Rented {film.rental_count} times)</li>
+                      <li key={film.film_id}>{film.title} ({film.rental_count} rentals)</li>
                     ))}
                   </ul>
                 </div>
