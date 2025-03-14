@@ -177,7 +177,7 @@ function FilmsPage() {
         <div className="modal-overlay">
           <div className="modal">
             <button onClick={closeModal} className="close-button"><FaTimes /></button>
-            <h2>{selectedFilm.title}</h2>
+            <h2 className='modaltitle'>{selectedFilm.title}</h2>
             <p><strong>Category:</strong> {selectedFilm.category}</p>
             <p><strong>Year:</strong> {selectedFilm.release_year}</p>
             <p><strong>Rating:</strong> {selectedFilm.rating}</p>

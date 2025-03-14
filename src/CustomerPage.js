@@ -200,13 +200,14 @@ function CustomerPage() {
       {showModal && (
         <div style={{
           position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)",
-          background: "white", padding: "20px", borderRadius: "10px", boxShadow: "0px 0px 10px rgba(0,0,0,0.2)"
+          background: "white", padding: "20px", borderRadius: "10px", boxShadow: "0px 0px 10px rgba(0,0,0,0.2)", width: "35%", 
+          alignContent: "center"
         }}>
           {modalType === "view" && selectedCustomer && (
             <>
-              <button onClick={() => setShowModal(false)} className="close-button"><FaTimes /></button>
+              <button onClick={() => setShowModal(false)} className="closes-button"><FaTimes /></button>
               <div className="details">
-                <h3>Customer Details</h3>
+                <h3 className='h3title'>Customer Details</h3>
                 <p><strong>Name:</strong> {selectedCustomer.first_name} {selectedCustomer.last_name}</p>
                 <p><strong>Email:</strong> {selectedCustomer.email}</p>
               </div>
@@ -250,10 +251,10 @@ function CustomerPage() {
             <>
               <div className="idk">
               <div className="modalae">
-              <button onClick={() => { setShowModal(false); setEditCustomer(null); setModalType(null); }} className="close-button"><FaTimes /></button>
-              <h3>{modalType === "edit" ? "Edit Customer" : "Add New Customer"}</h3>
+              <button onClick={() => { setShowModal(false); setEditCustomer(null); setModalType(null); }} className="closes-button"><FaTimes /></button>
+              <div className="centering"><h3 className='h3title'>{modalType === "edit" ? "Edit Customer" : "Add New Customer"}</h3></div>
               <div>
-                <input
+                <input id="whyy"
                   type="text"
                   name="first_name"
                   placeholder="First Name"
@@ -266,7 +267,7 @@ function CustomerPage() {
                 />
               </div>
               <br />
-              <input
+              <input id="whyy"
                 type="text"
                 name="last_name"
                 placeholder="Last Name"
@@ -278,7 +279,8 @@ function CustomerPage() {
                 }
               />
               <br />
-              <input
+              <input style={{width: "250px", backgroundSize: "250px"}}
+                id="whyy"
                 type="text"
                 name="email"
                 placeholder="Email"

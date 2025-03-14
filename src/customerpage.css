@@ -132,7 +132,7 @@ table{
     width: 100px;
     padding: 0 10px;
     outline: none;
-    color: white;
+    color: #fff;
     background: none;
 }
 
@@ -281,7 +281,7 @@ table{
     padding-bottom: .2em;
 }
 
-.close-button {
+.closes-button {
     background: none;
     border: none;
     cursor: pointer;
@@ -293,7 +293,7 @@ table{
     right: 15px;
 }
 
-.close-button:hover {
+.closes-button:hover {
     color: rgb(77, 24, 24); 
 }
 
@@ -305,7 +305,7 @@ table{
 
 input {
     margin: 40px 25px;
-    width: 200px;
+    width: 250px;
     display: block;
     border: none;
     padding-top:1vw;
@@ -337,8 +337,10 @@ input {
   }
 .idk{
     padding:1vw;
-    width:20vw;
+    width:80%;
+    margin: auto;
     align-content: center;
+    justify-content: center;
 }
 
 
@@ -384,4 +386,21 @@ input {
 .button-28:active {
   box-shadow: none;
   transform: translateY(0);
+}
+
+.h3title{
+    color:#000;
+    text-shadow: 4px 4px 4px #fff;
+    width:auto;
+}
+
+#whyy[value]{
+    color: #000;
+}
+
+.centering{
+    width: 100%;
+    margin: auto;
+    padding: 3px;
+    align-content: center;
 }
