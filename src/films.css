@@ -238,3 +238,10 @@ input {
     visibility: visible !important;
     font-family: "Outfit", serif;
   }
+
+#porque[text]{
+    color: #000;
+}
+#porque{
+    color: #000;
+}

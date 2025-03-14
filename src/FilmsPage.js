@@ -5,29 +5,24 @@ import "./films.css";
 import {FaEye, FaTimes} from "react-icons/fa";
 
 function FilmsPage() {
-  const [films, setFilms] = useState([]); // Ensure default is an empty array
-  const [totalFilms, setTotalFilms] = useState(0);
+  const [films, setFilms] = useState([]); 
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [selectedFilm, setSelectedFilm] = useState(null);
   const [customerId, setCustomerId] = useState("");
   const [isRentModalOpen, setIsRentModalOpen] = useState(false);
   const [filmToRent, setFilmToRent] = useState(null);
-  const limit = 10; // Number of films per page
+  const limit = 10; 
 
   useEffect(() => {
     fetchFilms();
-  }, [search, page]); // Fetch films when search query or page changes
+  }, [search, page]);
 
   const fetchFilms = async () => {
     try {
-      const url = search
-        ? `/search-films?search=${search}&page=${page}&limit=${limit}`
-        : `/search-films?page=${page}&limit=${limit}`;
-      const response = await fetch(url);
+      const response = await fetch(`/search-films?page=${page}&limit=${limit}&search=${search}`);
       const data = await response.json();
       setFilms(data.films);
-      setTotalFilms(data.total); // Set total number of films
     } catch (error) {
       console.error("Error fetching films:", error);
     }
@@ -62,8 +57,8 @@ function FilmsPage() {
 
       if (data.success) {
         toast.success("Rental successful! 🎉");
-        fetchFilms(); // Refresh the available films
-        closeRentModal(); // Close the modal
+        fetchFilms(); 
+        closeRentModal();
       } else {
         toast.error(data.message || "Rental failed. ❌");
       }
@@ -73,8 +68,11 @@ function FilmsPage() {
     }
   };
 
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+    setPage(1);
+  };
 
-  const totalPages = Math.ceil(totalFilms / limit);
 
   const openModal = (film) => {
     setSelectedFilm(film);
@@ -93,10 +91,7 @@ function FilmsPage() {
         type="text"
         placeholder="Search by Film, Actor, or Genre"
         value={search}
-        onChange={(e) => {
-          setSearch(e.target.value);
-          setPage(1); // Reset to first page on new search
-        }}
+        onChange={handleSearchChange}
       />
 
       {/* Display Results */}
@@ -132,22 +127,10 @@ function FilmsPage() {
           </table>
 
           {/* Pagination Controls */}
-          <div className="pagination">
-            <button
-              disabled={page === 1}
-              onClick={() => setPage((prev) => prev - 1) } className='button-74'
-            >
-              Previous
-            </button>
-            <span className="page">
-              Page {page} of {totalPages}
-            </span>
-            <button
-              disabled={page === totalPages}
-              onClick={() => setPage((prev) => prev + 1)} className='button-74'
-            >
-              Next
-            </button>
+          <div className='pagination'>
+            <button className='button-74' disabled={page === 1} onClick={() => setPage(page - 1)}>Previous</button>
+            <span className="page"> Page {page} </span>
+            <button className='button-74' disabled={films.length < limit} onClick={() => setPage(page + 1)}>Next</button>
           </div>
         </div>
       ) : (
@@ -160,7 +143,7 @@ function FilmsPage() {
             <div className="closetop"><button className="close-button" onClick={closeRentModal}><FaTimes /></button></div>
             <h2 className='modaltitle'>Rent {filmToRent.title}</h2>
             <label>Enter Customer ID:</label>
-            <input
+            <input id='porque'
               type="text"
               value={customerId}
               onChange={(e) => setCustomerId(e.target.value)}
@@ -182,6 +165,9 @@ function FilmsPage() {
             <p><strong>Year:</strong> {selectedFilm.release_year}</p>
             <p><strong>Rating:</strong> {selectedFilm.rating}</p>
             <p><strong>Description:</strong> {selectedFilm.description}</p>
+            <p><strong>Length:</strong> {selectedFilm.length} minutes</p>
+            <p><strong>Replacement Cost:</strong> {selectedFilm.replacement_cost}</p>
+            <p><strong>Featured Actors:</strong> {selectedFilm.featured_actors}</p>
           </div>
         </div>
       )}

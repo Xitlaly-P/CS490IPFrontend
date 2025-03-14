@@ -6,7 +6,6 @@ function CustomerPage() {
   const [customers, setCustomers] = useState([]);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
-  const [total, setTotal] = useState(0);
   const limit = 10;
   const [modalType, setModalType] = useState(null); 
   const [newCustomer, setNewCustomer] = useState({
@@ -31,7 +30,6 @@ function CustomerPage() {
       );
       const data = await response.json();
       setCustomers(data.customers);
-      setTotal(data.total);
       } catch (error) {
       console.error("Error fetching customers:", error);
       }
